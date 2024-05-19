@@ -10,6 +10,10 @@ app.get("/" , (req,res) => {
     res.render("index.ejs");
 });
 
+app.get("/signup" , (req,res) => {
+    res.render("signup.ejs");
+});
+
 app.use("/static",express.static ("public"));
 
 app.listen (port, () =>{
