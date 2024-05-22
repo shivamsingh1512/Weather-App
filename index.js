@@ -1,5 +1,7 @@
-const express = require("express");
-var bodyParser = require('body-parser');
+import express from "express";
+import bodyParser from "body-parser";
+import { postSignup } from "./controllers/signup.js";
+
 const app = express();
 
 const port = 3000;
@@ -18,12 +20,7 @@ app.get("/signup" , (req,res) => {
     res.render("signup.ejs");
 });
 
-app.post("/signup" , (req,res) => {
-    let username = req.body.username;
-    console.log(username);
-    const password = req.body.password;
-    res.send("username: " + username + "password: " + password);
-});
+app.post("/signup" , postSignup);
 
 app.use("/static",express.static ("public"));
 
