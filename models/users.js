@@ -8,7 +8,7 @@ const User=mongoose.model("User",
     }
 );
 
-function createuser(usename,password) {
+export async function createuser(usename,password) {
     const user = new User({
         username:username,
         password:password,

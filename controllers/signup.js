@@ -11,7 +11,14 @@ export async function postSignup(req, res) {
   let username = req.body.username;
   console.log(username);
   const password = req.body.password;
-  res.send("username: " + username + "password: " + password);
+  const confpassword = req.body.confpassword;
+  if (password === confpassword) {
+    res.send("username: " + username + "password: " + password);
+
+  }else {
+    res.send("something went wrong!");
+  }
+  
 }
 
 // module.exports = postSignup;
