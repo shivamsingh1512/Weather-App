@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import { createuser } from "../models/users.js";
 
 const app = express();
 
@@ -13,6 +14,7 @@ export async function postSignup(req, res) {
   const password = req.body.password;
   const confpassword = req.body.confpassword;
   if (password === confpassword) {
+    createuser (username , password);
     res.send("username: " + username + "password: " + password);
 
   }else {
