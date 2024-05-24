@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import { postSignup } from "./controllers/signup.js";
+import { checkUser } from "./models/users.js";
 
 const app = express();
 
@@ -14,6 +15,14 @@ app.set("views engine" , "ejs");
 
 app.get("/" , (req,res) => {
     res.render("index.ejs");
+});
+
+app.post("/", async (req,res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+    var check = await checkUser(username,password);
+    console.log(check); 
+    res.send("hellworld");
 });
 
 app.get("/signup" , (req,res) => {
