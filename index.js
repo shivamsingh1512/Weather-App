@@ -33,7 +33,7 @@ app.post("/", async (req,res) => {
         // sessionStorage["password"] = password;
         store.set("username" , username);
         store.set("password" , password);
-        res.send("hellworld");
+        res.redirect("/weather");
     }else{
         res.send("error");
     }
