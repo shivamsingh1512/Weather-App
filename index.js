@@ -5,7 +5,7 @@ import bodyParser from "body-parser";
 import store from "store";
 import { postSignup } from "./controllers/signup.js";
 import { checkUser } from "./models/users.js";
-import { weatherReport } from "./controllers/weather.js";
+import { postWeatherReport, weatherReport } from "./controllers/weather.js";
 
 const app = express();
 
@@ -46,7 +46,9 @@ app.get("/signup" , (req,res) => {
 
 app.post("/signup" , postSignup);
 
-// app.get("/weather" , weatherReport);
+app.get("/weather" , weatherReport);
+
+app.post("/weather" , postWeatherReport);
 
 app.use("/static",express.static ("public"));
 

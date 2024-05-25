@@ -34,3 +34,8 @@ export async function checkUser(username,password) {
         return true;
     }
 }
+
+export async function findUserIdByName(username,password){
+    let user = await User.findOne({ username: username, password: password }).lean();
+    return user._id;
+}
