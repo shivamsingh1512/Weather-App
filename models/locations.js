@@ -7,3 +7,11 @@ const Location=mongoose.model("Location",
      city :String,
     }
 );
+
+export async function createLocation(userid,city) {
+    const location = new Location({
+        userid:userid,
+        city:city,
+    });
+    location.save();
+}

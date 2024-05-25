@@ -1,7 +1,11 @@
 import express from "express";
+import session from "express-session";
+import cookieSession from "cookie-session";
 import bodyParser from "body-parser";
+import store from "store";
 import { postSignup } from "./controllers/signup.js";
 import { checkUser } from "./models/users.js";
+import { weatherReport } from "./controllers/weather.js";
 
 const app = express();
 
@@ -21,8 +25,19 @@ app.post("/", async (req,res) => {
     const username = req.body.username;
     const password = req.body.password;
     var check = await checkUser(username,password);
-    console.log(check); 
-    res.send("hellworld");
+    console.log(check);
+    if (check === true) {
+        // req.session.username = username;
+        // req.session.password = password;
+        // sessionStorage["username"] = username;
+        // sessionStorage["password"] = password;
+        store.set("username" , username);
+        store.set("password" , password);
+        res.send("hellworld");
+    }else{
+        res.send("error");
+    }
+    
 });
 
 app.get("/signup" , (req,res) => {
@@ -30,6 +45,8 @@ app.get("/signup" , (req,res) => {
 });
 
 app.post("/signup" , postSignup);
+
+// app.get("/weather" , weatherReport);
 
 app.use("/static",express.static ("public"));
 
