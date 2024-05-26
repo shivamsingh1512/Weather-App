@@ -2,6 +2,7 @@ import express from "express";
 import session from "express-session";
 import cookieSession from "cookie-session";
 import bodyParser from "body-parser";
+import moment from "moment";
 import store from "store";
 import { postSignup } from "./controllers/signup.js";
 import { checkUser } from "./models/users.js";
@@ -18,6 +19,7 @@ app.set("views engine" , "ejs");
 //app.set("views" , path.join(__dirname , "/views"));
 
 app.get("/" , (req,res) => {
+    console.log(moment());
     res.render("index.ejs");
 });
 
