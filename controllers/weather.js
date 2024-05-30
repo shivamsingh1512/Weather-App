@@ -3,14 +3,16 @@ import session from "express-session";
 import cookieSession from "cookie-session";
 import bodyParser from "body-parser";
 import { findUserIdByName } from "../models/users.js";
+import moment from "moment";
 import store from "store";
 import dotenv from "dotenv";
 dotenv.config();
 
 async function getWeather(location) {
     let apikey = process.env.API_KEY;
-    const d = new Date();
-    const response = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=${apikey}`);
+    const d = moment();
+    const date = moment().format("YYYY-MM-DD");
+    const response = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/${date}/${date}?key=${apikey}`);
     const weatherResult = await response.json();
     console.log(weatherResult);
     return weatherResult;
@@ -19,6 +21,7 @@ async function getWeather(location) {
 export async function weatherReport(req,res){
     // let username = req.session.username;
     // let password = req.session.password;
+    // const date = moment().format("YYYY-MM-DD");
     res.render("weather.ejs");
 }
 

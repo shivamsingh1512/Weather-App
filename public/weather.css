@@ -73,3 +73,6 @@ input[type="text"]:hover {
     background-color: rgba(24, 21, 21, 0.309);
     
 }
+img{
+    height: 20px;
+}
