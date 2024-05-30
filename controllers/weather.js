@@ -4,6 +4,7 @@ import cookieSession from "cookie-session";
 import bodyParser from "body-parser";
 import { findUserIdByName } from "../models/users.js";
 import moment from "moment";
+import { createLocation } from "../models/locations.js";
 import store from "store";
 import dotenv from "dotenv";
 dotenv.config();
@@ -30,6 +31,7 @@ export async function postWeatherReport(req,res){
     let password = store.get("password");
     let user = await findUserIdByName(username, password);
     let cityname = req.body.cityname;
+    createLocation(user,cityname);
     let wr = getWeather(cityname);
     res.json(wr);
 }
