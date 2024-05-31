@@ -16,3 +16,7 @@ export async function createLocation(userid,city) {
     location.save();
 }
 
+export async function getLocations(userid){
+    const f = await Location.find({ userid: userid }).lean();
+    return f;
+}

@@ -19,6 +19,7 @@ body {
     padding-top: 90px;
     padding-left: 5px;
     padding-right: 5px;
+    box-shadow: 2px 4px 8px black;
     position: absolute; /* Center the appdiv */
     top: 40%; /* 50% down from the top */
     left: 50%; /* 50% in from the left */
@@ -71,8 +72,12 @@ input[type="text"]:hover {
     margin-top: 650px; /* Add some space between appdiv and cards */
     margin-bottom: 10px;
     background-color: rgba(24, 21, 21, 0.309);
-    
+    box-shadow: 2px 4px 8px black;
 }
 img{
-    height: 20px;
+    height: 50px;
+}
+
+li{
+    color: whitesmoke;
 }

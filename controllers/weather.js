@@ -4,7 +4,7 @@ import cookieSession from "cookie-session";
 import bodyParser from "body-parser";
 import { findUserIdByName } from "../models/users.js";
 import moment from "moment";
-import { createLocation } from "../models/locations.js";
+import { createLocation, getLocations } from "../models/locations.js";
 import store from "store";
 import dotenv from "dotenv";
 dotenv.config();
@@ -23,16 +23,28 @@ export async function weatherReport(req,res){
     // let username = req.session.username;
     // let password = req.session.password;
     // const date = moment().format("YYYY-MM-DD");
-    res.render("weather.ejs");
+    let username = store.get("username");
+    let password = store.get("password");
+    let userid = await findUserIdByName(username, password);
+    const loc = await getLocations(userid);
+    console.log(loc);
+    res.render("weather.ejs",{
+        locations: loc
+    });
 }
 
 export async function postWeatherReport(req,res){
     let username = store.get("username");
     let password = store.get("password");
-    let user = await findUserIdByName(username, password);
+    let userid = await findUserIdByName(username, password);
     let cityname = req.body.cityname;
-    createLocation(user,cityname);
+    createLocation(userid,cityname);
+    const loc = getLocations(userid);
     let wr = getWeather(cityname);
-    res.json(wr);
+    res.render("weather.ejs",{
+        locations: loc ,
+        cityname: cityname ,
+        weather: wr
+    });
 }
 

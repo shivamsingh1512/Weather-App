@@ -14,7 +14,10 @@
     <div class="appdiv">
         <h1>Sky Report</h1>
         <ul>
-            
+          <% for (var i = 0;i<locations.length;i++ ) {%>
+              <li> <%- locations[i].city %></li>
+          <% } %> 
+     
         </ul>
         <form method="post" action="/weather">
             <input name="cityname" type="text" placeholder="City name ">
