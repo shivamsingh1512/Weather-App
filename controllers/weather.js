@@ -23,14 +23,22 @@ export async function weatherReport(req,res){
     // let username = req.session.username;
     // let password = req.session.password;
     // const date = moment().format("YYYY-MM-DD");
-    let username = store.get("username");
-    let password = store.get("password");
-    let userid = await findUserIdByName(username, password);
-    const loc = await getLocations(userid);
-    console.log(loc);
-    res.render("weather.ejs",{
-        locations: loc
-    });
+    
+   
+    try {
+        let username = store.get("username");
+        let password = store.get("password");
+        console.log(username);
+        console.log(password);
+        let userid = await findUserIdByName(username, password);
+        const loc = await getLocations(userid);
+        console.log(loc);
+        res.render("weather.ejs",{
+            locations: loc
+        });
+    } catch (error) {
+        res.redirect("/");
+    }
 }
 
 export async function postWeatherReport(req,res){
