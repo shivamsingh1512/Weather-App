@@ -36,8 +36,7 @@ async function getWeather(location) {
     console.log(cc.days);
     let days = cc.days[0].temp;
     let c = toCelcius(days);
-    console.log(c);
-    return days;
+    return c;
   }
 
   
@@ -66,7 +65,7 @@ export async function weatherReport(req,res){
         }
         console.log(temp);
         res.render("weather.ejs",{
-            locations: loc
+            locations: temp
         });
     } catch (error) {
         console.log(error);
