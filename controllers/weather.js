@@ -9,15 +9,38 @@ import store from "store";
 import dotenv from "dotenv";
 dotenv.config();
 
+class Weathers{
+    constructor(city , temperature){
+        this.city = city ;
+        this.temperature = temperature;
+    }
+}
+
 async function getWeather(location) {
     let apikey = process.env.API_KEY;
     const d = moment();
     const date = moment().format("YYYY-MM-DD");
     const response = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/${date}/${date}?key=${apikey}`);
     const weatherResult = await response.json();
-    console.log(weatherResult);
+    // console.log(weatherResult);
     return weatherResult;
   }
+
+   function toCelcius(f){
+    let c = (f - 32) * 5/9;
+    return c;
+  }
+
+  async function getTemps(data){
+    let cc = JSON.parse(data);
+    console.log(cc.days);
+    let days = cc.days[0].temp;
+    let c = toCelcius(days);
+    console.log(c);
+    return days;
+  }
+
+  
 
 export async function weatherReport(req,res){
     // let username = req.session.username;
@@ -28,15 +51,25 @@ export async function weatherReport(req,res){
     try {
         let username = store.get("username");
         let password = store.get("password");
-        console.log(username);
-        console.log(password);
+        // console.log(username);
+        // console.log(password);
         let userid = await findUserIdByName(username, password);
         const loc = await getLocations(userid);
-        console.log(loc);
+        // console.log(loc);
+        let temp = [];
+        
+        for (var i = 0;i<loc.length;i++ ){
+            let tt = await getWeather(loc[i].city);
+            let temp2 = new Weathers(loc[i].city, await getTemps(JSON.stringify(tt)));
+            // console.log(temp2);
+            temp.push(temp2);
+        }
+        console.log(temp);
         res.render("weather.ejs",{
             locations: loc
         });
     } catch (error) {
+        console.log(error);
         res.redirect("/");
     }
 }
