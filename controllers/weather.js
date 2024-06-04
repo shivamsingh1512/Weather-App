@@ -33,13 +33,29 @@ async function getWeather(location) {
 
   async function getTemps(data){
     let cc = JSON.parse(data);
-    console.log(cc.days);
+    // console.log(cc.days);
     let days = cc.days[0].temp;
     let c = toCelcius(days);
     return c;
   }
 
-  
+  async function getCards(data) {
+    // console.log(data);
+    //try {
+      let cc = JSON.parse(data);
+      console.log(cc.days);
+      let obj = {
+        windspeed: cc.days[0].windspeed,
+        humidity: cc.days[0].humidity,
+        pressure: cc.days[0].pressure,
+      };
+      console.log(obj);
+      return obj;
+    //} catch (error) {
+    //   console.error("Error parsing card data:", error);
+    //   return null; // Or set a default value
+    // }
+  }
 
 export async function weatherReport(req,res){
     // let username = req.session.username;
@@ -54,9 +70,12 @@ export async function weatherReport(req,res){
         // console.log(password);
         let userid = await findUserIdByName(username, password);
         const loc = await getLocations(userid);
-        // console.log(loc);
+        console.log(loc[loc.length-1].city);
         let temp = [];
-        
+        // console.log(loc);
+        let vv = await getWeather(loc[loc.length-1].city);
+        let cards = await getCards(JSON.stringify(vv));
+        console.log(cards);
         for (var i = 0;i<loc.length;i++ ){
             let tt = await getWeather(loc[i].city);
             let temp2 = new Weathers(loc[i].city, await getTemps(JSON.stringify(tt)));
@@ -64,8 +83,10 @@ export async function weatherReport(req,res){
             temp.push(temp2);
         }
         console.log(temp);
+        
         res.render("weather.ejs",{
-            locations: temp
+            locations: temp ,
+            cards : cards
         });
     } catch (error) {
         console.log(error);

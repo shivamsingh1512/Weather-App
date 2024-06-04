@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import { createuser } from "../models/users.js";
+import store from "store";
 
 const app = express();
 
@@ -13,13 +14,19 @@ export async function postSignup(req, res) {
   console.log(username);
   const password = req.body.password;
   const confpassword = req.body.confpassword;
-  if (password === confpassword) {
-    createuser (username , password);
-    res.send("username: " + username + "password: " + password);
-
+  if (username !== "" || password !== ""){
+    if (password === confpassword) {
+      createuser (username , password);
+      store.set("username" , username);
+      store.set("password" , password);
+      res.redirect("/weather");
+    }else {
+      res.send("something went wrong!");
+    }
   }else {
-    res.send("something went wrong!");
+    res.render("signup.ejs");
   }
+  
   
 }
 
