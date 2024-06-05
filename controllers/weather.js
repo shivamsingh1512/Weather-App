@@ -95,17 +95,28 @@ export async function weatherReport(req,res){
 }
 
 export async function postWeatherReport(req,res){
-    let username = store.get("username");
-    let password = store.get("password");
-    let userid = await findUserIdByName(username, password);
-    let cityname = req.body.cityname;
-    createLocation(userid,cityname);
-    const loc = getLocations(userid);
-    let wr = getWeather(cityname);
-    res.render("weather.ejs",{
-        locations: loc ,
-        cityname: cityname ,
-        weather: wr
-    });
+  let username = store.get("username");
+  let password = store.get("password");
+  let userid = await findUserIdByName(username, password);
+  let cityname = req.body.cityname;
+  await createLocation(userid,cityname);
+  const loc = await getLocations(userid);
+  console.log(loc[loc.length-1].city);
+  let temp = [];
+  let vv = await getWeather(loc[loc.length-1].city);
+  let cards = await getCards(JSON.stringify(vv));
+  console.log(cards);
+  for (var i = 0;i<loc.length;i++ ){
+      let tt = await getWeather(loc[i].city);
+      let temp2 = new Weathers(loc[i].city, await getTemps(JSON.stringify(tt)));
+      temp.push(temp2);
+  }
+  console.log(temp);
+  
+  // res.render("weather.ejs",{
+  //     locations: temp ,
+  //     cards : cards
+  // });
+  res.redirect("/weather");
 }
 
