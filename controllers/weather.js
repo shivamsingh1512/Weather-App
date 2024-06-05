@@ -66,11 +66,13 @@ export async function weatherReport(req,res){
     try {
         let username = store.get("username");
         let password = store.get("password");
+        
         // console.log(username);
         // console.log(password);
         let userid = await findUserIdByName(username, password);
         const loc = await getLocations(userid);
         console.log(loc[loc.length-1].city);
+        store.set("w","true");
         let temp = [];
         // console.log(loc);
         let vv = await getWeather(loc[loc.length-1].city);
@@ -100,18 +102,18 @@ export async function postWeatherReport(req,res){
   let userid = await findUserIdByName(username, password);
   let cityname = req.body.cityname;
   await createLocation(userid,cityname);
-  const loc = await getLocations(userid);
-  console.log(loc[loc.length-1].city);
-  let temp = [];
-  let vv = await getWeather(loc[loc.length-1].city);
-  let cards = await getCards(JSON.stringify(vv));
-  console.log(cards);
-  for (var i = 0;i<loc.length;i++ ){
-      let tt = await getWeather(loc[i].city);
-      let temp2 = new Weathers(loc[i].city, await getTemps(JSON.stringify(tt)));
-      temp.push(temp2);
-  }
-  console.log(temp);
+  // const loc = await getLocations(userid);
+  // console.log(loc[loc.length-1].city);
+  // let temp = [];
+  // let vv = await getWeather(loc[loc.length-1].city);
+  // let cards = await getCards(JSON.stringify(vv));
+  // console.log(cards);
+  // for (var i = 0;i<loc.length;i++ ){
+  //     let tt = await getWeather(loc[i].city);
+  //     let temp2 = new Weathers(loc[i].city, await getTemps(JSON.stringify(tt)));
+  //     temp.push(temp2);
+  // }
+  // console.log(temp);
   
   // res.render("weather.ejs",{
   //     locations: temp ,

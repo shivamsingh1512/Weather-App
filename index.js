@@ -19,8 +19,11 @@ app.set("views engine" , "ejs");
 //app.set("views" , path.join(__dirname , "/views"));
 
 app.get("/" , (req,res) => {
-    console.log(moment());
-    res.render("index.ejs");
+    if (store.get("w")==="true"){
+        res.redirect("/weather");
+    }else{
+        res.render("index.ejs");
+    }
 });
 
 app.post("/", async (req,res) => {
