@@ -71,19 +71,32 @@ export async function weatherReport(req,res){
         // console.log(password);
         let userid = await findUserIdByName(username, password);
         const loc = await getLocations(userid);
-        console.log(loc[loc.length-1].city);
-        store.set("w","true");
+        console.log(loc);
         let temp = [];
-        // console.log(loc);
-        let vv = await getWeather(loc[loc.length-1].city);
-        let cards = await getCards(JSON.stringify(vv));
-        console.log(cards);
-        for (var i = 0;i<loc.length;i++ ){
-            let tt = await getWeather(loc[i].city);
-            let temp2 = new Weathers(loc[i].city, await getTemps(JSON.stringify(tt)));
-            // console.log(temp2);
-            temp.push(temp2);
+        let cards;
+        store.set("w","true");
+        if (loc.length===0){
+          let temp2 = new Weathers("","")
+          temp.push(temp2);
+          cards = {
+            windspeed: "",
+            humidity: "",
+            pressure: "",
+          };
         }
+        else {
+
+          let vv = await getWeather(loc[loc.length-1].city);
+           cards = await getCards(JSON.stringify(vv));
+          console.log(cards);
+          for (var i = 0;i<loc.length;i++ ){
+              let tt = await getWeather(loc[i].city);
+              let temp2 = new Weathers(loc[i].city, await getTemps(JSON.stringify(tt)));
+              // console.log(temp2);
+              temp.push(temp2);
+          }
+        }
+        // console.log(loc);
         console.log(temp);
         
         res.render("weather.ejs",{
