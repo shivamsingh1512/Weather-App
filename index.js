@@ -4,7 +4,7 @@ import cookieSession from "cookie-session";
 import bodyParser from "body-parser";
 import moment from "moment";
 import store from "store";
-import { postSignup } from "./controllers/signup.js";
+import { postSignup , logOut} from "./controllers/signup.js";
 import { checkUser } from "./models/users.js";
 import { postWeatherReport, weatherReport } from "./controllers/weather.js";
 
@@ -26,9 +26,12 @@ app.get("/" , (req,res) => {
     }
 });
 
-app.post("/", async (req,res) => {
-    const username = req.body.username;
-    const password = req.body.password;
+app.post("/login", async (req,res) => {
+    
+    var username = req.body.username;
+    var password = req.body.password;
+    console.log(req.body.username);
+    console.log(password);
     var check = await checkUser(username,password);
     console.log(check);
     if (check === true) {
@@ -54,6 +57,8 @@ app.post("/signup" , postSignup);
 app.get("/weather" , weatherReport);
 
 app.post("/weather" , postWeatherReport);
+
+// app.get("/logout" , logOut);
 
 app.use("/static",express.static ("public"));
 

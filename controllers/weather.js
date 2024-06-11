@@ -66,6 +66,12 @@ export async function weatherReport(req,res){
     try {
         let username = store.get("username");
         let password = store.get("password");
+        console.log(username);
+        console.log(password);
+        // if (username==undefined || password==undefined){
+        //   console.log("shivam==")
+        //   res.redirect("/");
+        // }
         
         // console.log(username);
         // console.log(password);
